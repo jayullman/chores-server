@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 // create connection to Mongo 
-const connectToDatabase = require('./services/database');
-connectToDatabase();
+require('./services/database');
+
 
 // configure routes on app
 require('./services/router')(app);
