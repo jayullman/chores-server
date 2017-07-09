@@ -1,13 +1,13 @@
 const User = require('../models/user');
 
-exports.signup = function(req, res, next) {
-  res.send('signup request received');
 
+exports.signup = function(req, res, next) {
   // if user with email exists, return error
 
   // if a user with email does not exist, create user in db
   const user = new User({
-    email: 'jay@gmail.com'
+    email: req.body.email,
+    name: req.body.name
   });
 
 // TODO: Send existing email error to client
@@ -19,15 +19,10 @@ exports.signup = function(req, res, next) {
       // if email already exists
       if (err.name === 'MongoError' && err.code === 11000) {
         console.log('email already exists')
+        return res.status(422).send({ error: 'Email is in use' });
       }
     } else {
-      console.log('user created')
+      return res.status(200).send({ message: 'User has been created', user: user });
     }
-    
-  })
-  
-
-  // respond to request
-  // console.log('new user saved');
-
+  });
 }
